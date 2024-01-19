@@ -1,0 +1,11 @@
+BeautfulSoup4
+requests
+g4f
+langchain
+langchain-community
+langchain-core
+langchain-experimental
+chromadb
+chainlit
+sentence-transformers
+langchainhub
