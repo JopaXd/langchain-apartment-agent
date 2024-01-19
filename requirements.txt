@@ -1,4 +1,5 @@
 BeautfulSoup4
+lxml
 requests
 g4f
 langchain
