@@ -10,3 +10,7 @@ chromadb
 chainlit
 sentence-transformers
 langchainhub
+playwright
+tiktoken
+kor
+user_agent

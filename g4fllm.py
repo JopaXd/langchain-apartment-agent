@@ -20,7 +20,7 @@ class G4FLLM(LLM):
 	def _llm_type(self) -> str:
 		return "custom"
 
-	def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+	def _call(self, prompt: str, stop: Optional[List[str]] = None, **kwargs) -> str:
 		for provider in self._providers:
 			try:
 				out = g4f.ChatCompletion.create(
@@ -39,7 +39,7 @@ class G4FLLM(LLM):
 				out = out[:min_stop]
 		return out
 
-	async def _acall(self, prompt:str, run_manager:Optional[AsyncCallbackManagerForLLMRun], stop: Optional[List[str]] = None):
+	async def _acall(self, prompt:str, run_manager:Optional[AsyncCallbackManagerForLLMRun], stop: Optional[List[str]] = None, **kwargs):
 		for provider in self._providers:
 			try:
 				out = await g4f.ChatCompletion.create_async(
