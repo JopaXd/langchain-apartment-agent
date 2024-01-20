@@ -1,13 +1,9 @@
 from langchain_community.document_transformers import BeautifulSoupTransformer
-from langchain_community.document_loaders import AsyncChromiumLoader, AsyncHtmlLoader
+from langchain_community.document_loaders import AsyncHtmlLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from kor import create_extraction_chain, Object, Text, Number, Bool
-from bs4 import BeautifulSoup
-from langchain_core import output_parsers
+from kor import create_extraction_chain, Object, Text, Bool
 from g4fllm import G4FLLM
 import pprint
-import requests
-from langchain_core.documents import Document
 
 schema = Object(
 		id="apartments",
@@ -51,9 +47,6 @@ def extract(content:str, schema):
 def scrape_booking(urls, schema):
 	loader = AsyncHtmlLoader(urls)
 	docs = loader.load()
-	# headers={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"}
-	# resp = requests.get("https://www.booking.com/searchresults.html?ss=Pomorie%2C+Burgas+Province%2C+Bulgaria&lang=en-us&checkin=2024-07-27&checkout=2024-08-05&group_adults=2&no_rooms=1&group_children=0&nflt=price%3DEUR-min-40-1&selected_currency=EUR", headers=headers)
-	# docs = [Document(page_content=resp.text)]
 	bs_transformer = BeautifulSoupTransformer()
 	docs_transformed = bs_transformer.transform_documents(docs, tags_to_extract=["div", 'span', 'p', 'li', 'a', 'strong'])
 	print("Extracting content with LLM")
