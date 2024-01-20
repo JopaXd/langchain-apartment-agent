@@ -23,21 +23,6 @@ schema = Object(
 		many=True
 	)
 
-# schema = {
-# 	"properties" : {
-# 		"apartment_name" : {"type" : "string"},
-# 		"apartment_link": {"type" : "string"},
-# 		"apartment_location": {"type" : "string"},
-# 		"apartment_distance_from_center": {"type": "string"},
-# 		"apartment_distance_from_beach": {"type" : "string"},
-# 		"apartment_free_cancellation": {"type" : "boolean"},
-# 		"apartment_taxes": {"type": "string"},
-# 		"apartment_description": {"type": "string"},
-# 		"apartment_price": {"type": "string"}
-# 	},
-# 	"required" : ["apartment_name", "apartment_link", "apartment_location", "apartment_distance_from_center", "apartment_distance_from_beach", "apartment_free_cancellation", "apartment_taxes", "apartment_description", "apartment_price"]
-# }
-
 llm = G4FLLM()
 
 def extract(content:str, schema):
