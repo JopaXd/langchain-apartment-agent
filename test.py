@@ -47,6 +47,8 @@ def extract(content:str, schema):
 def scrape_booking(urls, schema):
 	loader = AsyncHtmlLoader(urls)
 	docs = loader.load()
+	for doc in docs:
+		doc.page_content = doc.page_content.replace(u"\xa0", u"").strip()
 	bs_transformer = BeautifulSoupTransformer()
 	docs_transformed = bs_transformer.transform_documents(docs, tags_to_extract=["div", 'span', 'p', 'li', 'a', 'strong'])
 	print("Extracting content with LLM")
