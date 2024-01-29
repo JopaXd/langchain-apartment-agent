@@ -34,7 +34,10 @@ class BookingTool(BaseTool):
 		"['location', 'checkInDate', 'checkOutDate', 'numberOfAdults', 'numberOfRooms', 'numberOfChildren', 'minimumPricePerNight', 'maximumPricePerNight']."
 	)
 	args_schema: Type[BaseModel] = BookingInput
-	return_direct: bool = True
+	# What this does is it makes the ai only return the result of the tool.
+	# In this case a json of apartments.
+	# We don't need that. We need the ai to return its won response based on the tool's result.
+	# return_direct: bool = True
 
 	def _extract(self, content:str, schema):
 		llm = G4FLLM()
