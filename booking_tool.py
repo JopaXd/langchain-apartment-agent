@@ -9,9 +9,10 @@ from langchain.callbacks.manager import (
 )
 from langchain.tools import BaseTool
 from kor import create_extraction_chain, Object, Text, Bool
-from typing import Optional, Type, Union
+from typing import Optional, Type
 from g4fllm import G4FLLM
 import pprint
+import json
 import re
 
 class BookingInput(BaseModel):
@@ -77,13 +78,24 @@ class BookingTool(BaseTool):
 		# print(extracted_content["text"]["data"]["apartments"])
 		wrapper = DuckDuckGoSearchAPIWrapper(region="wt-wt", time=None, max_results=3)
 		search = DuckDuckGoSearchResults(api_wrapper=wrapper, source="text")
-		for apartment in extracted_content["text"]["data"]["apartments"]:
-			apartment_url = re.search("(?P<url>https?://[^\s]+)", search.run(f"{apartment['apartment_name']} {apartment['apartment_location']} booking")).group("url")[:-2]
-			if apartment_url:
-				apartment["apartment_url"] = apartment_url
-		return extracted_content["text"]["data"]["apartments"]
-
-
+		try:
+			for apartment in extracted_content["text"]["data"]["apartments"]:
+				apartment_url = re.search("(?P<url>https?://[^\s]+)", search.run(f"{apartment['apartment_name']} {apartment['apartment_location']} booking")).group("url")[:-2]
+				if apartment_url:
+					apartment["apartment_url"] = apartment_url
+			return extracted_content["text"]["data"]["apartments"]
+		except KeyError:
+			#Parsing of scraper output failed
+			#Working with raw output.
+			print("KeyErorr occured, using raw json.")
+			content = extracted_content["text"]["raw"].replace("<json>\n", "").replace("</json>", "")
+			content_json = json.loads(content)
+			for apartment in content_json["apartments"]:
+				apartment_url = re.search("(?P<url>https?://[^\s]+)", search.run(f"{apartment['apartment_name']} {apartment['apartment_location']} booking")).group("url")[:-2]
+				if apartment_url:
+					apartment["apartment_url"] = apartment_url
+			return content_json
+		
 	def _run(
 		self,
 		location:str,
