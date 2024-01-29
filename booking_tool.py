@@ -23,16 +23,17 @@ class BookingInput(BaseModel):
 	numberOfChildren: int =  Field(description="Number of children that will be in the apartment.")
 	numberOfRooms: int = Field(description="Number of rooms in the apartment")
 	#Due to the possibility of "min" and "max" values, these should be string.
-	minimumPricePerNight: str = Field(description="The minimum that the user is willing to spend per night (in euros). The lower value of the price range.")
-	maximumPricePerNight: str = Field(description="The maximum that the user is willing to spend per night (in euros). The higher value of the price range.")
+	minimumPricePerNight: str = Field(description="The minimum that the user is willing to spend per night The lower value of the price range provided. ONLY the number is important, not the currency. Ignore the currency, and DO NOT perform any conversion. Example: 10, 23, 25...")
+	maximumPricePerNight: str = Field(description="The maximum that the user is willing to spend per night, the higher number of the price range provided. ONLY the number is important, not the currency. Ignore the currency, and DO NOT perform any conversion. Example: 50, 80, 120... ")
+	currency:str = Field(description="The currency in which the minimum and maximum price are specified, if they're specified. Specifically, they should be specified in currency codes. Example: EUR, USD, GBP, etc...")
 
 class BookingTool(BaseTool):
 	name = "Booking"
 	description = (
 		"Use this tool when you need to find, and recommend the best apartments according to the user input."
-		"Given the check in and check out date, number of rooms in the apartment, number of adults and children in the apartment, and minimum and maximum price per night"
+		"Given the check in and check out date, number of rooms in the apartment, number of adults and children in the apartment, and minimum and maximum price per night (only the number) and the currency in which the prices are specified."
 		"To use the tool you must provide all of the following parameters "
-		"['location', 'checkInDate', 'checkOutDate', 'numberOfAdults', 'numberOfRooms', 'numberOfChildren', 'minimumPricePerNight', 'maximumPricePerNight']."
+		"['location', 'checkInDate', 'checkOutDate', 'numberOfAdults', 'numberOfRooms', 'numberOfChildren', 'minimumPricePerNight', 'maximumPricePerNight', 'currency']."
 	)
 	args_schema: Type[BaseModel] = BookingInput
 	# What this does is it makes the ai only return the result of the tool.
@@ -106,10 +107,11 @@ class BookingTool(BaseTool):
 		numberOfRooms:int,
 		minimumPricePerNight:str="min",
 		maximumPricePerNight:str="max",
+		currency:str = "EUR",
 		run_manager: Optional[CallbackManagerForToolRun] = None
 		) -> str:
 		"""Use the tool."""
-		return str(self._scrape_booking(f"https://www.booking.com/searchresults.html?ss={location}&lang=en-us&checkin={checkInDate}&checkout={checkOutDate}&group_adults={numberOfAdults}&no_rooms={numberOfRooms}&group_children={numberOfChildren}&nflt=price%3DEUR-{minimumPricePerNight}-{maximumPricePerNight}-1&selected_currency=EUR"))
+		return str(self._scrape_booking(f"https://www.booking.com/searchresults.html?ss={location}&lang=en-us&checkin={checkInDate}&checkout={checkOutDate}&group_adults={numberOfAdults}&no_rooms={numberOfRooms}&group_children={numberOfChildren}&nflt=price%3DEUR-{minimumPricePerNight}-{maximumPricePerNight}-1&selected_currency={currency}"))
 
 	def _arun(
 		self,

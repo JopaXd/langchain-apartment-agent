@@ -11,4 +11,4 @@ if __name__ == "__main__":
 	llm = G4FLLM()
 	agent = create_structured_chat_agent(llm, tools, prompt)
 	agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True, max_iterations=10)
-	agent_executor.invoke({"input": "I am looking for an apartment in Pomorie for two with one room from 26th of July, to 5th of august this year. The price for one night should be between 10 and 40 euros."})
+	agent_executor.invoke({"input": "I am looking for an apartment in Pomorie for two with one room from 26th of July, to 5th of august this year. The price for one night should be between 10 and 50 CAD."})
