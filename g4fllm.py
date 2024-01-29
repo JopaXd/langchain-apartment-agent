@@ -11,9 +11,7 @@ class G4FLLM(LLM):
 			g4f.Provider.Bing,
 			g4f.Provider.GeekGpt,
 			g4f.Provider.GptChatly,
-			g4f.Provider.Liaobots,
-			g4f.Provider.Phind,
-			g4f.Provider.Raycast
+			g4f.Provider.Liaobots
 		]
 
 	@property
