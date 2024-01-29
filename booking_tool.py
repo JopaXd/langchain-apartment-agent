@@ -3,12 +3,11 @@ from langchain_community.utilities import DuckDuckGoSearchAPIWrapper
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import AsyncHtmlLoader
 from langchain_community.tools import DuckDuckGoSearchResults
-from langchain.tools import BaseTool, StructuredTool, tool
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.callbacks.manager import (
-	AsyncCallbackManagerForToolRun,
 	CallbackManagerForToolRun,
 )
+from langchain.tools import BaseTool
 from kor import create_extraction_chain, Object, Text, Bool
 from typing import Optional, Type, Union
 from g4fllm import G4FLLM
