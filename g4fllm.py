@@ -17,6 +17,10 @@ class G4FLLM(LLM):
 			]
 		elif self.gpt_model == "gpt-3.5":
 			return [
+				g4f.Provider.GeekGpt,
+				g4f.Provider.GptChatly,
+				g4f.Provider.Liaobots,
+				g4f.Provider.Yqcloud,
 				g4f.Provider.ChatBase,
 				g4f.Provider.ChatgptAi,
 				g4f.Provider.FakeGpt,
@@ -26,7 +30,7 @@ class G4FLLM(LLM):
 				g4f.Provider.Hashnode,
 				g4f.Provider.You,
 				g4f.Provider.ChatForAi,
-				g4f.Provider.AItianhuSpace,
+				g4f.Provider.AItianhuSpace
 			]
 		else:
 			return []
@@ -38,8 +42,12 @@ class G4FLLM(LLM):
 	def _call(self, prompt: str, stop: Optional[List[str]] = None, **kwargs) -> str:
 		for provider in self._providers:
 			try:
+				if self.gpt_model == "gpt-4":
+					model = g4f.models.gpt_4
+				elif self.gpt_model == "gpt-3.5":
+					model = g4f.models.gpt_35_turbo
 				out = g4f.ChatCompletion.create(
-					model=g4f.models.gpt_4,
+					model=model,
 					messages=[{"role": "user", "content": prompt}],
 					provider = provider,
 				)
@@ -58,8 +66,12 @@ class G4FLLM(LLM):
 	async def _acall(self, prompt:str, run_manager:Optional[AsyncCallbackManagerForLLMRun], stop: Optional[List[str]] = None, **kwargs):
 		for provider in self._providers:
 			try:
+				if self.gpt_model == "gpt-4":
+					model = g4f.models.gpt_4
+				elif self.gpt_model == "gpt-3.5":
+					model = g4f.models.gpt_35_turbo
 				out = await g4f.ChatCompletion.create_async(
-					model=g4f.models.gpt_4,
+					model=model,
 					messages=[{"role": "user", "content": prompt}],
 					provider = provider,
 				)
