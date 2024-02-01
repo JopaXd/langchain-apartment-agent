@@ -20,12 +20,12 @@ class BookingInput(BaseModel):
 	checkInDate: str = Field(description="Date of checking in. Example: 2024-08-05")
 	checkOutDate: str = Field(description="Date of checking out. Example: 2024-08-05")
 	numberOfAdults: int =  Field(description="Number of adults that will be in the apartment.")
-	numberOfChildren: int =  Field(description="Number of children that will be in the apartment. If not specified, should be 0")
+	numberOfChildren: int =  Field(description="Number of children that will be in the apartment. If not specified, the value IS 0")
 	numberOfRooms: int = Field(description="Number of rooms in the apartment.")
 	#Due to the possibility of "min" and "max" values, these should be string.
-	minimumPricePerNight: str = Field(description="The minimum that the user is willing to spend per night The lower value of the price range provided. ONLY the number is important, not the currency. Ignore the currency, and DO NOT perform any conversion. Example: 10, 23, 25... If not specified, the value should be min")
-	maximumPricePerNight: str = Field(description="The maximum that the user is willing to spend per night, the higher number of the price range provided. ONLY the number is important, not the currency. Ignore the currency, and DO NOT perform any conversion. Example: 50, 80, 120... If not specified, the value should be max")
-	currency:str = Field(description="The currency in which the minimum and maximum price are specified, if they're specified. Specifically, they should be specified in currency codes. Example: EUR, USD, GBP, etc... If not specified, should be EUR")
+	minimumPricePerNight: str = Field(description="The minimum that the user is willing to spend per night The lower value of the price range provided. ONLY the number is important, not the currency. Ignore the currency, and DO NOT perform any conversion. Example: 10, 23, 25... If not specified, the value is 'min'")
+	maximumPricePerNight: str = Field(description="The maximum that the user is willing to spend per night, the higher number of the price range provided. ONLY the number is important, not the currency. Ignore the currency, and DO NOT perform any conversion. Example: 50, 80, 120... If not specified, the value is 'max'")
+	currency:str = Field(description="The currency in which the minimum and maximum price are specified, if they're specified. Specifically, it should be specified in currency codes. Example: EUR, USD, GBP, etc... If not specified, should be EUR")
 
 class BookingTool(BaseTool):
 	name = "Booking"

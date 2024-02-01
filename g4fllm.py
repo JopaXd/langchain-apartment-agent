@@ -18,8 +18,8 @@ class G4FLLM(LLM):
 		elif self.gpt_model == "gpt-3.5":
 			return [
 				g4f.Provider.GeekGpt,
-				g4f.Provider.GptChatly,
 				g4f.Provider.Liaobots,
+				g4f.Provider.GptChatly,
 				g4f.Provider.Yqcloud,
 				g4f.Provider.ChatBase,
 				g4f.Provider.ChatgptAi,
