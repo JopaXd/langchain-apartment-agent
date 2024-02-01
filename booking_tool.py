@@ -50,7 +50,9 @@ class BookingTool(BaseTool):
 	def _scrape_booking(self, url):
 		schema = Object(
 			id="apartments",
-			description = ("Apartments that the user might be interested in according to their input."),
+			#A limit had to be added. Otherwise, the gpt cannot return the whole response, therefore the json is invalid.
+			#In this case, its 15. I think it used to break at 17-18.
+			description = ("Apartments that the user might be interested in according to their input. Retrieve the first 15 results"),
 			attributes=[
 				Text(id="apartment_name", description="Name of apartment"),
 				# Text(id="apartment_link", description="Link of the page where the user can look at the apartment", examples=[("https://booking.com/hotel/bg...", "Example of the link of an appartment")]),
@@ -91,7 +93,7 @@ class BookingTool(BaseTool):
 			print("KeyErorr occured, using raw json.")
 			content = extracted_content["text"]["raw"].replace("<json>\n", "").replace("</json>", "")
 			content_json = json.loads(content)
-			for apartment in content_json["apartments"]:
+			for apartment in content_json:
 				apartment_url = re.search("(?P<url>https?://[^\s]+)", search.run(f"{apartment['apartment_name']} {apartment['apartment_location']} booking")).group("url")[:-2]
 				if apartment_url:
 					apartment["apartment_url"] = apartment_url
