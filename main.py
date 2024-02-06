@@ -10,6 +10,9 @@ llm = G4FLLM()
 @cl.on_chat_start
 def start():
 	tools = [BookingTool()]
+	#return_messages=True means that the chat history provided to the prompt is an array.
+	#If false, it returns a string.
+	#The MessagesPlaceholder inside of this prompt requires a list.
 	memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 	prompt = hub.pull("hwchase17/structured-chat-agent")
 	#Extracted from hwchase17/structured-chat-agent, 
